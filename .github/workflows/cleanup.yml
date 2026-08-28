@@ -29,5 +29,5 @@ jobs:
           git config user.name "titanic-frame-bot"
           git config user.email "bot@users.noreply.github.com"
           git add -u frames
-          git diff --cached --quiet || git commit -m "cleanup: manter apenas janela de 24 frames"
+          git diff --cached --quiet || git commit -m "cleanup: manter frame atual e 24 anteriores"
           git push

@@ -3,7 +3,7 @@
 import json
 from pathlib import Path
 
-KEEP_PREVIOUS = 24
+KEEP_PREVIOUS = 25  # frame atual + 24 anteriores
 
 
 def cleanup_images(
