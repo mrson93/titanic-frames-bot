@@ -1,0 +1,10 @@
+.env
+frames/
+_burn_subs.srt
+__pycache__/
+*.pyc
+.venv/
+.superpowers/
+.worktrees/
+.claude/
+*.srt

@@ -1,0 +1,35 @@
+name: post-frame
+
+on:
+  workflow_dispatch:   # disparado pelo cron-job.org a cada 30 min (cron nativo do
+                       # GitHub removido: impontual e redundante com o gatilho externo)
+
+permissions:
+  contents: write             # pra commitar o state.json avançado de volta
+
+concurrency:
+  group: post-frame
+  cancel-in-progress: false   # se um post ainda roda, o próximo espera (não sobrepõe)
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+      - run: pip install -r requirements.txt
+      - name: Postar próximo frame
+        run: python post.py
+        env:
+          BLUESKY_HANDLE: ${{ secrets.BLUESKY_HANDLE }}
+          BLUESKY_APP_PASSWORD: ${{ secrets.BLUESKY_APP_PASSWORD }}
+          FRAMES_BASE_URL: https://raw.githubusercontent.com/mrson93/titanic-frames-images/main
+      - name: Salvar estado avançado
+        run: |
+          git config user.name "titanic-frame-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git add state.json
+          git diff --cached --quiet || git commit -m "state: avança frame"
+          git push
