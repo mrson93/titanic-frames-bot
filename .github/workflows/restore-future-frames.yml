@@ -1,0 +1,23 @@
+name: restore-future-frames
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+jobs:
+  restore:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Reverter remoção indevida de frames futuros
+        env:
+          IMAGE_REPO_TOKEN: ${{ secrets.IMAGE_REPO_TOKEN }}
+        run: |
+          git clone "https://x-access-token:${IMAGE_REPO_TOKEN}@github.com/mrson93/titanic-frames-images.git" images-repo
+          cd images-repo
+          git config user.name "titanic-frame-bot"
+          git config user.email "bot@users.noreply.github.com"
+          git revert --no-edit 1e8517f36d71883eafaa1a4fd7da4386f91fd6c6
+          git push
