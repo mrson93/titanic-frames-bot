@@ -1,8 +1,6 @@
 name: cleanup-posted-frames
 
 on:
-  push:
-    branches: [main]
   schedule:
     # 09:00 America/Sao_Paulo (12:00 UTC while Brazil is UTC-3)
     - cron: "0 12 * * *"
